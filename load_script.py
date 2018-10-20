@@ -173,7 +173,6 @@ def perform_standard_inserts(arguments, cursor, table, connection):
         values_string = get_values_formatter_string(num_columns)
         for row in csv_reader:
             insert_command += "INSERT INTO " + table + " VALUES (" + get_values_string(row) + ");"
-        print("Inserts:", insert_command)
         start = time.time()
         cursor.execute(insert_command)
         connection.commit()
