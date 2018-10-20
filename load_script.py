@@ -5,6 +5,8 @@ import time
 
 # queries to create all the tables
 
+NUM_TUPLES = 10000
+
 tables = {
     
 "Album":"""CREATE TABLE IF NOT EXISTS "Album"
@@ -151,6 +153,8 @@ def load(arguments):
                 perform_standard_inserts(arguments, cursor, table, connection)
             elif insert_type == 'PostgreSQL_COPY':
                 perform_postgres_bulk_insert(arguments, cursor, table, connection)
+            elif insert_type == 'SQL_Batch_Insert':
+                perform_sql_batch_inserts(arguments, cursor, table, connection)
             
     print('Data loaded succesfully!')
 
@@ -158,7 +162,7 @@ def perform_postgres_bulk_insert(arguments, cursor, table, connection):
     with open(arguments.file) as data:
         next(data)                                                 # skip the header
         start = time.time()
-        cursor.copy_from(data, table, sep = ',', size = 10000)     # insert the data from the file to the table
+        cursor.copy_from(data, table, sep = ',', size = NUM_TUPLES)     # insert the data from the file to the table
         connection.commit()
         end = time.time()
         print_metrics(start, end)
@@ -168,11 +172,31 @@ def perform_standard_inserts(arguments, cursor, table, connection):
     with open(arguments.file) as data:
         csv_reader = csv.reader(data, delimiter = ',')
         # skip the header
-        header_row = next(csv_reader)
-        num_columns = len(header_row)
-        values_string = get_values_formatter_string(num_columns)
+        next(csv_reader)
         for row in csv_reader:
             insert_command += "INSERT INTO " + table + " VALUES (" + get_values_string(row) + ");"
+        start = time.time()
+        cursor.execute(insert_command)
+        connection.commit()
+        end = time.time()
+        print_metrics(start, end)  
+
+def perform_sql_batch_inserts(arguments, cursor, table, connection):
+    insert_command = ""
+    values_batch_string = ""
+    with open(arguments.file) as data:
+        csv_reader = csv.reader(data, delimiter = ',')
+        # skip the header
+        header_row = next(csv_reader)
+        num_columns = len(header_row)
+        counter = 0
+        for row in csv_reader:
+            counter += 1 
+            values_batch_string += "(" + get_values_string(row) + "),"
+            if counter % arguments.batch_size == 0:
+                insert_command += "INSERT INTO " + table + " VALUES " + values_batch_string[:-1] + ";"
+                values_batch_string = ""
+
         start = time.time()
         cursor.execute(insert_command)
         connection.commit()
@@ -196,7 +220,7 @@ def get_values_formatter_string(num_columns):
 def print_metrics(start_time, end_time):
     time_taken = end_time - start_time
     print("Time for data inserts:", time_taken)
-    print("Throughput:", 10000/time_taken)
+    print("Throughput:", NUM_TUPLES/time_taken)
 
 
 # main function
@@ -205,7 +229,7 @@ def main():
     help_string = ("Load the data from .csv file into its respective table.\n "
                    "Example run command:\n  "
                    "python load_script.py localhost Chinook_IMT563 <user> <password>\n "
-                   "csv_output/synth-0000.csv Track Single_Inserts")
+                   "csv_output/synth-0000.csv Track Single_Inserts <batch_size>")
     parser = argparse.ArgumentParser(description = help_string)
 
     # read the information from command line
@@ -220,6 +244,8 @@ def main():
 
     parser.add_argument('insert_type', metavar = 'insert_type', type = str, 
         help = 'type of insert to perform', choices = ['Single_Inserts', 'SQL_Batch_Insert', 'PostgreSQL_COPY'])
+
+    parser.add_argument('batch_size', metavar = 'batch_size', type = int, help = 'batch size for bulk insert')
 
     arguments = parser.parse_args()
 
