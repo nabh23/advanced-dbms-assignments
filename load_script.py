@@ -1,5 +1,7 @@
 import psycopg2 as pg
 import argparse
+import csv
+import time
 
 # queries to create all the tables
 
@@ -142,14 +144,52 @@ def load(arguments):
             table = 'public."' + arguments.table + '"'
 
             # truncate table
-            cursor.execute("TRUNCATE TABLE %s" % table)
+            cursor.execute("TRUNCATE TABLE %s CASCADE" % table)
 
-            with open(arguments.file) as data:
-
-                next(data)                                                 # skip the header
-                cursor.copy_from(data, table, sep = ',', size = 10000)     # insert the data from the file to the table
-
+            insert_type = arguments.insert_type
+            if insert_type == 'Single_Inserts':
+                perform_standard_inserts(arguments, cursor, table, connection)
+            elif insert_type == 'PostgreSQL_COPY':
+                perform_postgres_bulk_insert(arguments, cursor, table, connection)
+            
     print('Data loaded succesfully!')
+
+def perform_postgres_bulk_insert(arguments, cursor, table, connection):
+    with open(arguments.file) as data:
+        next(data)                                                 # skip the header
+        start = time.time()
+        cursor.copy_from(data, table, sep = ',', size = 10000)     # insert the data from the file to the table
+        connection.commit()
+        end = time.time()
+        print_metrics(start, end)
+
+def perform_standard_inserts(arguments, cursor, table, connection):
+    with open(arguments.file) as data:
+        csv_reader = csv.reader(data, delimiter = ',')
+        # skip the header
+        header_row = next(csv_reader)
+        num_columns = len(header_row)
+        values_string = get_values_formatter_string(num_columns)
+        start = time.time()
+        for row in csv_reader:
+            cursor.execute("INSERT INTO " + table + " VALUES (" + values_string + ")", row)
+        connection.commit()
+        end = time.time()
+        print_metrics(start, end)        
+           
+def get_values_formatter_string(num_columns):
+    result = ""
+    counter = 0
+    while counter < num_columns:
+        result += "%s, "
+        counter += 1
+    return result[:-2]
+
+def print_metrics(start_time, end_time):
+    time_taken = end_time - start_time
+    print("Time for standard inserts:", time_taken)
+    print("Throughput:", 10000/time_taken)
+
 
 # main function
 
@@ -166,6 +206,9 @@ def main():
 
     parser.add_argument('file', metavar = 'file', type = str, help = 'name/path of the file')
     parser.add_argument('table', metavar = 'table', type = str, help = 'name of the table')
+
+    parser.add_argument('insert_type', metavar = 'insert_type', type = str, 
+        help = 'type of insert to perform', choices = ['Single_Inserts', 'SQL_Batch_Insert', 'PostgreSQL_COPY'])
 
     arguments = parser.parse_args()
 
