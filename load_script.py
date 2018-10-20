@@ -194,9 +194,9 @@ def print_metrics(start_time, end_time):
 # main function
 
 def main():
-    help_string = ("Load the data from .csv file into its respective table. "
-                   "Example run command:  "
-                   "python load_script.py localhost Chinook_IMT563 <user> <password> "
+    help_string = ("Load the data from .csv file into its respective table.\n "
+                   "Example run command:\n  "
+                   "python load_script.py localhost Chinook_IMT563 <user> <password>\n "
                    "csv_output/synth-0000.csv Track Single_Inserts")
     parser = argparse.ArgumentParser(description = help_string)
 
