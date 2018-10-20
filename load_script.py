@@ -164,19 +164,28 @@ def perform_postgres_bulk_insert(arguments, cursor, table, connection):
         print_metrics(start, end)
 
 def perform_standard_inserts(arguments, cursor, table, connection):
+    insert_command = ""
     with open(arguments.file) as data:
         csv_reader = csv.reader(data, delimiter = ',')
         # skip the header
         header_row = next(csv_reader)
         num_columns = len(header_row)
         values_string = get_values_formatter_string(num_columns)
-        start = time.time()
         for row in csv_reader:
-            cursor.execute("INSERT INTO " + table + " VALUES (" + values_string + ")", row)
+            insert_command += "INSERT INTO " + table + " VALUES (" + get_values_string(row) + ");"
+        print("Inserts:", insert_command)
+        start = time.time()
+        cursor.execute(insert_command)
         connection.commit()
         end = time.time()
-        print_metrics(start, end)        
-           
+        print_metrics(start, end)  
+
+def get_values_string(row):
+    result = ""
+    for column in row:
+        result += ",'" + column + "'"
+    return result[1:]
+
 def get_values_formatter_string(num_columns):
     result = ""
     counter = 0
@@ -187,7 +196,7 @@ def get_values_formatter_string(num_columns):
 
 def print_metrics(start_time, end_time):
     time_taken = end_time - start_time
-    print("Time for standard inserts:", time_taken)
+    print("Time for data inserts:", time_taken)
     print("Throughput:", 10000/time_taken)
 
 
