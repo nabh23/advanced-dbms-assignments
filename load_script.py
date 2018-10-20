@@ -194,8 +194,11 @@ def print_metrics(start_time, end_time):
 # main function
 
 def main():
-
-    parser = argparse.ArgumentParser(description = 'Load the data from .csv file into its respective table')
+    help_string = ("Load the data from .csv file into its respective table. "
+                   "Example run command:  "
+                   "python load_script.py localhost Chinook_IMT563 <user> <password> "
+                   "csv_output/synth-0000.csv Track Single_Inserts")
+    parser = argparse.ArgumentParser(description = help_string)
 
     # read the information from command line
 
