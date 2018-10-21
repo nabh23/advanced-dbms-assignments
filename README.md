@@ -3,4 +3,4 @@ Seventh: Advanced Topics in Relational and Non-Relational Databases Assignments 
 
 - [Project Milestone: Initial Setup and Data Load](/initial_setup_and_data_load)
 
-- [Performance Experiment: Bulk Ingest](/performance_experiment_bulk_ingest)
+- [Performance Experiment: Bulk Ingest](/bulk_ingest)
