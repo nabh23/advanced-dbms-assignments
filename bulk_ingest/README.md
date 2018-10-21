@@ -1,4 +1,4 @@
-# Performance Experiment: Bulk Ingest
+﻿# Performance Experiment: Bulk Ingest
 
 ## Abstract
 
@@ -24,7 +24,7 @@ Timings were measured programmatically in Python using the [time](https://docs.p
 
 ## Main Result
 
-
+![Result](/result.png)
 
 ## Additional Experiments
 
