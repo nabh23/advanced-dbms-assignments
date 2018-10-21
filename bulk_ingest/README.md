@@ -24,7 +24,7 @@ Timings were measured programmatically in Python using the [time](https://docs.p
 
 ## Main Result
 
-![Result](/result.png)
+![Result](https://github.com/tprateek287/advanced-dbms-assignments/blob/master/bulk_ingest/result.PNG "Batch Size versus Throughput")
 
 ## Additional Experiments
 
