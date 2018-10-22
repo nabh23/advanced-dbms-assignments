@@ -60,8 +60,8 @@ Timings were measured programmatically in Python using the [time](https://docs.p
 
 ### c)
 
-### d) Insert records using the INSERT / SELECT syntax
-
+### d) Insert records using the INSERT / SELECT syntax  
+**Group Member:** Harkar Talwar
 ![Result](./result_9d.png "Variation in Throughput with INSERT/SELECT scenarios")
 
 ## Conclusions and Discussion
