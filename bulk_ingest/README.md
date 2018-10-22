@@ -57,7 +57,7 @@ Timings were measured programmatically in Python using the [time](https://docs.p
 ### a)
 
 ### b)
-**Group Members:**Aakash Agrawal
+**Group Members:** Aakash Agrawal
 ![Result](./result_9b.png "Variation in Throughput with # of indexes")
 
 ### c)
