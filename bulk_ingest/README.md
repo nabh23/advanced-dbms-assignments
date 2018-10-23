@@ -68,6 +68,8 @@ Timings were measured programmatically in Python using the [time](https://docs.p
 
 ![Result](./result_9b.png "Variation in Throughput with # of indexes")
 
+* Overall, the throughput decreases as the number of indexes increases. However, for 4 indexes the throughput has increased compared to 3 indexes
+
 ### c)
 
 ### d) Insert records using the INSERT / SELECT syntax  
