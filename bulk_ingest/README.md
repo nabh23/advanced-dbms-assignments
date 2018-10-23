@@ -8,31 +8,36 @@
 
 #### Description of the conceptual experiment  
 
-The experiment aims to analyze the performance for Bulk Insert on PostgreSQL under different operational conditions and by using different insertion mechanisms. The two key points of comparison, based on which different conditions listed in the next section are designed are:  
+The experiment aims to analyze the performance for Bulk Insert on PostgreSQL by using different insertion/indexing mechanisms. There are two key points of comparison, based on which different conditions listed in the next section are designed:  
 
 * Comparing Sequential Inserts with Batch Inserts*  
 * Comparing Bulk Insert Performance in the Presence/Absence of Indexes*  
 
-#### Conditions being tested
+#### Conditions being tested  
 
-The following conditions were tested and compared as part of the analysis:  
-1. Inserting 10,000 records sequentially without the use of any batch insert capabilities.
-2. Using standard SQL batch insert statements, and varying batch sizes as: 1, 5, 10, 20, 50, 100, 1000, 2500
-3. Creating an index on the primary key.
-4. Creating a secondary (non-clustered index) on another attribute of the table.
-5. Using bulk load features of the DBMS (COPY FROM command in case of PostgreSQL)
-6. Incrementally adding more secondary indexes.
-7. Performing bulk inserts by reading from another table, i.e. using the INSERT INTO....SELECT FROM syntax.
+Database: Digital Music Store  
+Target Table: Track (song details)  
+Number of records: 10,000  
+Primary Key: TrackId  
+Secondary Index Attribute: Name (song name)  
+
+The following conditions were tested and compared as part of the analysis:   
+* Inserting records sequentially without the use of any batch insert capabilities.  
+* Using standard SQL batch insert statements, and varying batch sizes as: 1, 5, 10, 20, 50, 100, 1000, 2500  
+* Creating an index on the primary key and then inserting records with different batch sizes.  
+* Creating an additional secondary (non-clustered index) on another attribute of the table, and varying batch sizes for inserts.  
+* Using bulk load features of the DBMS ('COPY FROM' command in case of PostgreSQL).  
+* Incrementally adding more secondary indexes and performing inserts.  
+* Performing bulk inserts by reading from another table, i.e. using the 'INSERT INTO....SELECT FROM' syntax.  
 
 #### Expectations    
 
 * It was expected that inserting records sequentially would result in the lowest throughput among all other scenarios.  
 * When using standard SQL batch inserts, we hoped to see a steady increase in throughput with the increase in batch size. However, beyond a certain batch size, we hypothesized that the increase in throughput would stabilize.  
-* Although PostgreSQL does not support clustered indexes and requires an explicity 'cluster' action to be performed, we hope that even creating a non-clustered index on the primary key would bring down the insert performance, at least for smaller batch sizes.  
+* Although PostgreSQL does not support clustered indexes and requires an explicit 'cluster' action to be performed, we hoped that even creating a non-clustered index on the primary key would bring down the insert performance, and that the effect would be more pronounced for smaller batch sizes.  
 * With the addition of a second non-clustered index, it was anticipated that inserts would slow down even further, and keep deteriorating with the addition of more secondary indexes.  
 * Use of PostgreSQL native bulk insert functionality using 'COPY FROM' was expected to yield better results than using standard SQL batch inserts.  
-* Lastly, using the 'INSERT INTO...SELECT FROM' syntax, we hoped to achieve the best results across conditions, assuming that it helped the database engine to cut down on the overhead related to parsing insert queries, and to simply copy the rows that exist in another table.
-
+* Lastly, by using the 'INSERT INTO...SELECT FROM' syntax, we hoped to achieve the best results across conditions, assuming that it helped the database engine to cut down on the overhead related to parsing and executing insert queries, and simply copy the rows that exist in another table.
 
 ## Assumptions and Setup
 
@@ -57,15 +62,20 @@ Timings were measured programmatically in Python using the [time](https://docs.p
 ### a)
 
 ### b)
-**Group Members:** Aakash Agrawal
+**Group Member:** Aakash Agrawal
 
 ![Result](./result_9b.png "Variation in Throughput with # of indexes")
 
 ### c)
 
 ### d) Insert records using the INSERT / SELECT syntax  
-**Group Member:** Harkar Talwar
+**Group Member:** Harkar Talwar  
 ![Result](./result_9d.png "Variation in Throughput with INSERT/SELECT scenarios")
+
+* The above results are in agreement with our hypothesis. 
+* Overall, the throughput is the highest among all scenarios. 
+* The throughput is however reduced by 9% in the presence of an index on the primary key.
+* The presence of a secondary index results in a large 64% drop in throughput for the insert operation. 
 
 ## Conclusions and Discussion
 
