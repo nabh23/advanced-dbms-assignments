@@ -2,7 +2,7 @@
 
 ## Abstract
 
-
+This experiment compares the performance of different methods of bulk insert against the "Digital Music Store" PostgreSQL database under various indexing strategies.We find that 
 
 ## Hypothesis
 
