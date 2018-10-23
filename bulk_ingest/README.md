@@ -63,7 +63,7 @@ Timings were measured programmatically in Python using the [time](https://docs.p
 
 ### a)
 
-### b)
+### b) Multiple secondary Indexes
 **Group Member:** Aakash Agrawal
 
 ![Result](./result_9b.png "Variation in Throughput with # of indexes")
