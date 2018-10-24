@@ -67,7 +67,9 @@ Timings were measured programmatically in Python using the [time](https://docs.p
 **Group Member:** Prateek Tripathi
 ![Result](./charts/result_9a.PNG "Variation in Throughput, Bulk-loading Using COPY Command")
 
-* 
+* The results confirm our hypothesis, that using PostgreSQL specific COPY FROM command for bulk inserts offers considerable performance gains over SQL batch inserts.
+* The performance for COPY FROM marginally reduces as the number of indexes are increased.
+* However, even in the presence of two indexes, the throughput is 22% more than the highest value observed using regular batch inserts.
 
 ### b) Multiple secondary Indexes
 **Group Member:** Aakash Agrawal
@@ -92,23 +94,23 @@ Timings were measured programmatically in Python using the [time](https://docs.p
 The fastest bulk insert condition was using INSERT INTO...SELECT FROM syntax, with no indexes in place on the target table.
 
 ### Reasons for Superior Performance:    
-'INSERT INTO...SELECT FROM' operates faster than a normal INSERT command because the data is not read externally, but is rather copied from an existing table to the target table, in a single transaction. Another reason for this result, we argue, could be the absence of a WHERE condition, when selecting data from the source table.
+'INSERT INTO...SELECT FROM' operates faster than a normal INSERT command because the data is not read externally, but is rather copied from an existing table to the target table, in a single transaction. Another reason for this result, we argue, could be the absence of a WHERE or JOIN condition, when selecting data from the source table.
 
 ### Surprising Findings:  
-The results for the main experiment, with different batch sizes, were surprising in that some erratic behavior was observed. In some cases, insertion in the presence of two indexes was (marginally) faster than that in the presence of one index, and insertion in the presence of one index was (marginally) faster than that in the absence of indexes.
+The results for the main experiment, with different batch sizes, were surprising and some erratic behavior in insert Performance was observed. In some cases, insertion in the presence of two indexes was (marginally) faster than that in the presence of one index, and insertion in the presence of one index was (marginally) faster than that in the absence of indexes.
 
 ### Limitations of the Experiment:  
 * We were not able to test accurately, scenarios demanding the presence of a clustered index on the primary key. This was because there is limited (indirect) support for clustered indexes in PostgreSQL, and the database does not automatically arrange table data to correlate with the clustered index.
 * Some of the surprising results we observed could be due to network latency effects, since the insertions were all performed through a local Python script on a remote AWS hosted database.
-* Moreover, the number of rows may not have been considerably large to clearly observe effects related to indexing. This might have contributed to some of the surprising findings.
+* Moreover, the number of rows may not have been considerably large to clearly and consistently observe effects related to indexing. This might have contributed to some of the surprising findings.
 
 ### Future Work 
-* The analysis was currently performed by comparing insertion of 10,000 rows in different conditions. It would be interesting to see the results when inserting say 1 million rows, through each scenario. This could help minimize the inconsistency across different scenarios (no index, one index, and two indexes) and yield predictable and repeatable results.
-* It would also be worthwhile to explore how the database could be tuned for high throughput on inserts. One of the possible approaches could be to analyze the use of unlogged tables (PostgreSQL uses Write-Ahead Logging by default which incurs additional disk I/O overhead). 
+* The analysis was currently performed by comparing insertion of 10,000 rows in different conditions. It would be interesting to see the results when inserting, say, 1 million rows, through each scenario. This could help minimize the inconsistency across different scenarios (no index, one index, and two indexes) and yield repeatable and better interpretable results.
+* It would also be worthwhile to explore how the database could be tuned for high throughput on inserts. One of the possible approaches could be to analyze the use of unlogged tables (PostgreSQL uses Write-Ahead Logging by default which incurs additional disk I/O) (Zaiste, 2017). 
 
 ### Recommendations to DBAs
 * The number of indexes on a table can be a dominant factor for insert performance. Indexes should be used sparingly if inserts are to be optimized.
-* Another way to speed bulk inserts could be to drop indexes temporarily while loading large amounts of data and then recreating them, an approach often used in data-warehousing scenarios.
+* Another way to speed up bulk inserts could be to drop indexes temporarily while loading large amounts of data and then rebuilding the indexes, an approach often used in data-warehousing scenarios.
 * Although INSERT INTO...SELECT FROM offers the best performance in our case, a complex select query involving joins and filtering could negatively impact the performance of this method.
 
 ## References
@@ -122,3 +124,7 @@ Python Software Foundation. (2018). *time — Time access and conversions*. Retr
 Rocha, L. (2017). *Chinook Database*. Retrieved from https://github.com/lerocha/chinook-database 
 
 Varrazzo, D. (2018). *psycopg*. Retrieved from http://initd.org/psycopg/ 
+
+Winand, M. (n.d.). *Use the Index, Luke. Modifying Data: Inserts.* Retrieved from https://use-the-index-luke.com/sql/dml/inserts
+
+Zaiste (2017). *Faster INSERTs: How to increase PostgreSQL write performance*. Retrieved from https://blog.nukomeet.com/faster-inserts-how-to-increase-postgresql-write-performance-24d76bd56f75
