@@ -57,16 +57,23 @@ Timings were measured programmatically in Python using the [time](https://docs.p
 
 ## Main Result
 
-![Result](./result.PNG "Batch Size versus Throughput")
+![Result](./charts/result.PNG "Batch Size versus Throughput")
+
+* 
 
 ## Additional Experiments
 
-### a)
+### a) Bulk-loading Using COPY Command
+**Group Member:** Prateek Tripathi
+
+![Result](./charts/result_9a.png "Variation in Throughput, Bulk-loading Using COPY Command")
+
+* 
 
 ### b) Multiple secondary Indexes
 **Group Member:** Aakash Agrawal
 
-![Result](./result_9b.png "Variation in Throughput with # of indexes")
+![Result](./charts/result_9b.png "Variation in Throughput, with # of indexes")
 
 * Overall, the throughput decreases as the number of indexes increases. However, for 4 indexes the throughput has increased compared to 3 indexes
 
@@ -74,7 +81,7 @@ Timings were measured programmatically in Python using the [time](https://docs.p
 
 ### d) Insert records using the INSERT / SELECT syntax  
 **Group Member:** Harkar Talwar  
-![Result](./result_9d.png "Variation in Throughput with INSERT/SELECT scenarios")
+![Result](./charts/result_9d.png "Variation in Throughput with INSERT/SELECT scenarios")
 
 * The above results are in agreement with our hypothesis. 
 * Overall, the throughput is the highest among all scenarios. 
