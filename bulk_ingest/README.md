@@ -84,8 +84,7 @@ Timings were measured programmatically in Python using the [time](https://docs.p
 **Group Member:** Aakash Agrawal
 ![Result](./charts/result_9b.png "Variation in Throughput, with # of indexes")
 
-* The results confirm our Hypothesis for upto 3 indexes and surprisingly for 4 indexes there is some discrepancy.
-* Overall, the throughput decreases as the number of indexes increases. However, for 4 indexes the throughput has increased compared to 3 indexes
+* The results confirm our Hypothesis for upto 3 indexes (the throughput decreases as the number of indexes increases) and surprisingly for 4 indexes we observe some discrepancy (throughput has increased compared to 3 indexes).
 * The throughput is reduced by 4% in the presence of three indexes as compared to 1.6% with 4 indexes.
 
 ### c) Measurement and Impact of Background Latency
