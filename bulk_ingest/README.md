@@ -107,7 +107,8 @@ Timings were measured programmatically in Python using the [time](https://docs.p
 ## Conclusions and Discussion  
 
 ### Fastest Bulk Insert Condition:  
-The fastest bulk insert condition was using INSERT INTO...SELECT FROM syntax, with no indexes in place on the target table.
+The fastest bulk insert condition was using INSERT INTO...SELECT FROM syntax, with no indexes in place on the target table.  
+Compared to our baseline performance (2.37 seconds, 4219 throughput, this condition performed several times better with insertion time of 0.084 seconds and thus, a throughput of 120000), thereby showing a performance improvement of about 28%.
 
 ### Reasons for Superior Performance:    
 'INSERT INTO...SELECT FROM' operates faster than a normal INSERT command because the data is not read externally, but is rather copied from an existing table to the target table, in a single transaction. Another reason for this result, we argue, could be the absence of a WHERE or JOIN condition, when selecting data from the source table.
