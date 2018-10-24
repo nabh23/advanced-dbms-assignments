@@ -65,14 +65,12 @@ Timings were measured programmatically in Python using the [time](https://docs.p
 
 ### a) Bulk-loading Using COPY Command
 **Group Member:** Prateek Tripathi
-
-![Result](./charts/result_9a.png "Variation in Throughput, Bulk-loading Using COPY Command")
+![Result](./charts/result_9a.PNG "Variation in Throughput, Bulk-loading Using COPY Command")
 
 * 
 
 ### b) Multiple secondary Indexes
 **Group Member:** Aakash Agrawal
-
 ![Result](./charts/result_9b.png "Variation in Throughput, with # of indexes")
 
 * Overall, the throughput decreases as the number of indexes increases. However, for 4 indexes the throughput has increased compared to 3 indexes
