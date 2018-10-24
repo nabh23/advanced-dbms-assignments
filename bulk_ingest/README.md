@@ -27,7 +27,8 @@ The following conditions were tested and compared as part of the analysis:
 * Inserting records sequentially without the use of any batch insert capabilities.  
 * Using standard SQL batch insert statements, and varying batch sizes as: 1, 5, 10, 20, 50, 100, 1000, 2500  
 * Creating an index on the primary key and then inserting records with different batch sizes.  
-* Creating an additional secondary (non-clustered index) on another attribute of the table, and varying batch sizes for inserts.  
+* Creating an additional secondary (non-clustered index) on another attribute of the table, and varying batch sizes for inserts. 
+* Measuring the background latency; excluding the latency and comparing throughput and performance.  
 * Using bulk load features of the DBMS ('COPY FROM' command in case of PostgreSQL).  
 * Incrementally adding more secondary indexes and performing inserts.  
 * Performing bulk inserts by reading from another table, i.e. using the 'INSERT INTO....SELECT FROM' syntax.  
@@ -37,6 +38,7 @@ The following conditions were tested and compared as part of the analysis:
 * It was expected that inserting records sequentially would result in the lowest throughput among all other scenarios.  
 * When using standard SQL batch inserts, we hoped to see a steady increase in throughput with the increase in batch size. However, beyond a certain batch size, we hypothesized that the increase in throughput would stabilize.  
 * Although PostgreSQL does not support clustered indexes and requires an explicit 'cluster' action to be performed, we hoped that even creating a non-clustered index on the primary key would bring down the insert performance, and that the effect would be more pronounced for smaller batch sizes.  
+* We expect some imrovement in throughput when we exclude the background latency times from the query execution timings.  
 * With the addition of a second non-clustered index, it was anticipated that inserts would slow down even further, and keep deteriorating with the addition of more secondary indexes.  
 * Use of PostgreSQL native bulk insert functionality using 'COPY FROM' was expected to yield better results than using standard SQL batch inserts.  
 * Lastly, by using the 'INSERT INTO...SELECT FROM' syntax, we hoped to achieve the best results across conditions, assuming that it helped the database engine to cut down on the overhead related to parsing and executing multiple insert queries, and simply copy the rows that exist in another table.
@@ -79,8 +81,8 @@ Timings were measured programmatically in Python using the [time](https://docs.p
 **Group Member:** Jayashree Raman
 ![Result](./charts/result_9c.PNG "Variation in Throughput Without Background Latency, with # of indexes")
 
-* After running the *SELECT 1* query multiple times and averaging the execution times, we arrived at the average background latency time for the database. The latency had a mean of **0.0438 seconds** and a standard deviation of **0.007** seconds.  
-Comparing the original throughput and the throughput with the background latency removed, we found that throughput increases by around 80 - 180 transactions/second, and is considerably notable at smaller-mid batch sizes.
+* After running the *SELECT 1* query multiple times and averaging the execution times, we arrived at the average background latency time for the database. The latency had a mean of **0.0438 seconds** and a standard deviation of **0.007** seconds.   
+* Comparing the original throughput and the throughput with the background latency removed, we found that throughput increases by around 80 - 180 transactions/second, and is considerably notable at smaller-mid batch sizes.  
 
 
 
