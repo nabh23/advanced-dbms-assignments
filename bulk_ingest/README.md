@@ -3,7 +3,7 @@
 ## Abstract
 
 This experiment compares the performance of different methods of bulk insert against the "Digital Music Store" PostgreSQL database under various indexing strategies. First, we analyze the performance of Sequential Inserts. Second, we perform batch inserts and analyze the performance of the batch inserts with respect to number of indexes (primary, secondary, clustered), use of "Insert Into ... Select From" and few other scenarios. The best performance is observed for batch-inserts with INSERT/SELECT and COPY commands.
-We find that batch insert using INSERT/SELECT syntax with no indexes offers 2.8 times the throughput over inserting records with Two indexes on the table. A similar observation is recorded when using the COPY command during bulk-loading where inserts with no indexes offer 1.15 times the throughput as compared to 2 indexes.
+We find that Batch Insert using INSERT/SELECT syntax with no indexes offers 2.8 times the throughput over inserting records with Two indexes on the table. A similar observation is recorded when using the COPY command during bulk-loading where inserts with no indexes offer 1.15 times the throughput as compared to 2 indexes.
 
 
 ## Hypothesis
@@ -61,7 +61,12 @@ Timings were measured programmatically in Python using the [time](https://docs.p
 
 ![Result](./charts/result.PNG "Batch Size versus Throughput")
 
-* 
+* The above plot shows the comparison of throughputs for 3 different scenarios and 7 different batch sizes. Evidently, throughput for a given batch size is highest for inserts without any index.  
+* We found that for the case with no index, throughput was highest for a batch size of 50, and dwindled there onwards, and increased again for batch size 2500. Between the two batch sizes, the throughput followed a steady, plateaued curve with not much noticeable difference.   
+* For the case with the index on primary key (using btree, applied on the TrackId column in the Track table), the throughput considerably reduced. This behavior was expected, and the difference was stark enough compared to the no index scenario.   
+* For the case with two indexes (applied on the TrackId and AlbumId columns in the Track table) however, we found quite a few anomalies, especially for the higher batch sizes. Our expectation was that the throughput would decrease further, however in some cases the throughput turned out to be higher than the scenario with one index on the primary key. We suspect this could be an indicator that introduction of the first index makes the greatest difference to performance, and subsequent indexes have lesser impact.  
+* Based on the performance experiments we performed, we would recommend dropping indexes when loading huge amounts of data into a table, and then performing indexing operations later on.  
+* We would also like to run the same experiment with an even more bigger data set, about 100x-1000x of our current data size (n =10,000 rows) and analyze the impact on time and throughput.  
 
 ## Additional Experiments
 
