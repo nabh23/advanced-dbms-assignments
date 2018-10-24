@@ -59,7 +59,7 @@ Timings were measured programmatically in Python using the [time](https://docs.p
 
 ## Main Result
 
-* We started off with inserting data sequentially in the Teack table in our data base. Inserting 10,000 records took ~2.37 seconds, i.e. a throughput of *4219*. This was the baseline number we started off with.  
+* We started off with inserting data sequentially in the Track table in our data base. Inserting 10,000 records took ~2.37 seconds, i.e. a throughput of *4219*. This was the baseline number we started off with.  
 
 ![Result](./charts/result.PNG "Batch Size versus Throughput")
 
