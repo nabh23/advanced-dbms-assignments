@@ -3,7 +3,7 @@
 ## Abstract
 
 This experiment compares the performance of different methods of bulk insert against the "Digital Music Store" PostgreSQL database under various indexing strategies. First, we analyze the performance of Sequential Inserts. Second, we perform batch inserts and analyze the performance of the batch inserts with respect to number of indexes (primary, secondary, clustered), use of "Insert Into ... Select From" and few other scenarios. The best performance is observed for batch-inserts with INSERT/SELECT and COPY commands.
-We find that Batch Insert using INSERT/SELECT syntax with no indexes offers 2.8 times the throughput over inserting records with Two indexes on the table. A similar observation is recorded when using the COPY command during bulk-loading where inserts with no indexes offer 1.15 times the throughput as compared to 2 indexes.
+We find that batch insert using INSERT/SELECT syntax with no indexes offers 2.8 times the throughput over inserting records with Two indexes on the table. A similar observation is recorded when using the COPY command during bulk-loading where inserts with no indexes offer 1.15 times the throughput as compared to 2 indexes.
 
 
 ## Hypothesis
