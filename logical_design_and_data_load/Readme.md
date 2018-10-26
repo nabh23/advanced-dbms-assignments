@@ -56,6 +56,12 @@ SELECT * FROM "TopTracksBySales"
 WHERE "TrackSales" > 2  
 ```
 
-*Query Plan:*
+*Query Plan:*  
+
 ![Query Plan](./query_plans/view3.PNG "Query Plan for Top Tracks View")
 
+*Operations Dominating the Cost:*  
+
+*Algorithm Used for an Expensive Scenario:*
+
+*Selection Condition in the Query Plan*
