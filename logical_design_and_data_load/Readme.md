@@ -31,6 +31,17 @@ SELECT * FROM "TopCustomersBySales" LIMIT 50;
 ```
 
 *Query Plan:*  
+![Query Plan](./query_plans/view3.PNG "Query Plan for Top Customers View")
+
+*Operations Dominating the Cost:*  
+*Sorting the records in descending order of the TotalAmt:*  
+
+*GROUPBY Operation on CustomerId:*
+
+*Hash Join based on InvoiceId:*
+
+
+
 
 ### 3. View of Our Choice
 
