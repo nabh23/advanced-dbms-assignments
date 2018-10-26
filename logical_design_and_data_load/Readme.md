@@ -5,10 +5,36 @@
 ### 1. View Involving a join
 
 ### 2. View Involving a GROUP-BY
+* Purpose: This view allows the business to analyze the customers who bought maximum worth of items in the digital music store, periodically. To get the result, we implement a join between the Customer, Invoice and InvoiceItem tables to view the customers whose purchase value was highest (weekly/monthly/annually)
+
+*Create View Command:*  
+```
+CREATE VIEW "TopCustomersBySales" AS
+SELECT "c"."CustomerId", SUM("UnitPrice" * "Quantity") AS "TotalAmt"
+FROM
+(SELECT "Customer"."CustomerId", "FirstName", "LastName", "InvoiceId"
+	FROM public."Customer"
+	JOIN 
+	public."Invoice"
+	ON public."Customer"."CustomerId" = public."Invoice"."CustomerId") c
+	JOIN public."InvoiceLine"
+	ON c."InvoiceId" = "InvoiceLine"."InvoiceId"
+	GROUP BY "CustomerId"
+	ORDER BY "TotalAmt" DESC;
+```
+
+*Representative Query:*  
+```
+-- Show top 50 Customers (here top signifies customers who bought highest worth of items from the store)
+EXPLAIN ANALYZE 
+SELECT * FROM "TopCustomersBySales" LIMIT 50;  
+```
+
+*Query Plan:*  
 
 ### 3. View of Our Choice
 
-*Purpose: This view would allow business and end users to analyze the top soundtracks in the digital music store at a given point of time, based on the total sales of each track.
+* Purpose: This view would allow business and end users to analyze the top soundtracks in the digital music store at a given point of time, based on the total sales of each track.
 
 *Create View Command:*  
 ```
