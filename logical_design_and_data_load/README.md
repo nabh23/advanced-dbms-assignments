@@ -55,7 +55,10 @@ ORDER BY "NumberOfCustomersRepresented" DESC;
 
 *Note: 'Exclusive' denotes time taken for execution, for that particular node. 'Inclusive' denotes the total time taken from the bottom of the tree to a node.*
 
-*Operations Dominating the Cost:*  
+*Operations Dominating the Cost:*
+As it can be seen from the query plan above, the operations dominating the cost (indicated by the exclusive time column) are:    
+1. Join - The join between the Customer and Employee tables is the most expensive operation performed as denoted by the 'Hash Join' node (0.056 ms), followed by the Employee table self join as denoted by the 'Hash Join' node (0.047 ms).
+2. Aggregation - The third most expensive operation is the aggregation operation performed by the 'HashAggregate' node (0.028 ms), where we group the table by "EmployeeId" and name of the employee.
 
 *Algorithm Used for an Expensive Scenario:*
 We observe that 'Hash Join' is the algorithm used for performing the join between the Customer and Employee tables and the Employee table self join. This requires the creation of an in-memory hash table in which the rows of one table are entered. This operation is followed by the scan operation on the other table, where the hash table is probed for matches to each row.
