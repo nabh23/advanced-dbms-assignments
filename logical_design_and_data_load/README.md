@@ -49,11 +49,19 @@ ORDER BY "NumberOfCustomersRepresented" DESC;
 
 ![Query Plan](./query_plans/view1.PNG "Query Plan for Customer Relations View")
 
+*Planning time: 0.247 ms*
+
+*Execution time: 0.276 ms*
+
+*Note: 'Exclusive' denotes time taken for execution, for that particular node. 'Inclusive' denotes the total time taken from the bottom of the tree to a node.*
+
 *Operations Dominating the Cost:*  
 
 *Algorithm Used for an Expensive Scenario:*
 
-*Selection Condition in the Query Plan*
+*Selection Condition in the Query Plan:*
+
+The selection condition was not pushed to the leaves in the query. Rather, it was performed as part of the aggregation operation. This is because in order for the sorting to be done, the aggregated column, 'NumberOfCustomersRepresented' was required to be computed. Therefore the optimizer, chose to apply the selection as part of the aggregation (HashAggregate) operation. Although, we could say that it was pushed to the leaf if we consider the nodes below the 'HashAggregate" node as part of the creation of the customer_relation view.
 
 ### 2. View Involving a GROUP-BY
 
