@@ -86,14 +86,13 @@ SELECT * FROM "TopCustomersBySales" LIMIT 50;
 ![Query Plan](./query_plans/view2.PNG "Query Plan for Top Customers View")
 
 *Operations Dominating the Cost:*  
-*Sorting the records in descending order of the TotalAmt:*  
+- As seen in the table, we see that two operations dominate the total cost, the first is the GROUPBY operation to group all of a customer's transactions together based on CustomerId, and second is the JOIN operatioon based on InvoiceID. The first operation take a total of 1.365ms out of the total 3.855 ms, and the second takes 1.282 ms.
 
-*GROUPBY Operation on CustomerId:*
+*Algorithm Used for an Expensive Scenario:*  
+Aggregation - The aggregation (GROUP BY) was performed using the HashAggregate algorithm. This algorithm involves iterating over each row, finding the GROUP key, CustomerId in this case, and assigning the row to a bucket corresponding to the CustomerId in a hash-table. The algorithm scans the hash-table and returns a row per key, while performing the required aggregation (sum in this case). The second most expensive operation was the JOIN between InvoiceLine and Invoice tables, performed using the HASH Join method.  
 
-*Hash Join based on InvoiceId:*
-
-
-
+*Selection Condition in the Query Plan:*  
+The selection condition was not pushed to the leaves in the query, but was performed as part of the aggregation operation. In order for the sorting to be done, the aggregated column, 'TotalAmt' was required. Therefore the optimizer, chose to apply this selection and grouping as part of the HashAggregate operation.
 
 ### 3. View of Our Choice
 
