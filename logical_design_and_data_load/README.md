@@ -2,9 +2,24 @@
 
 ## Three Commonly Accessed Views
 
-### 1. View Involving a join
+### 1. View Involving a JOIN
+
+* Purpose:
+
+*Create View Command:*
+
+*Representative Query:*
+
+*Query Plan:*
+
+*Operations Dominating the Cost:*  
+
+*Algorithm Used for an Expensive Scenario:*
+
+*Selection Condition in the Query Plan*
 
 ### 2. View Involving a GROUP-BY
+
 * Purpose: This view allows the business to analyze the customers who bought maximum worth of items in the digital music store, periodically. To get the result, we implement a join between the Customer, Invoice and InvoiceItem tables to view the customers whose purchase value was highest (weekly/monthly/annually)
 
 *Create View Command:*  
