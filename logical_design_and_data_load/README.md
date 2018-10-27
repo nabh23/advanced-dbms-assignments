@@ -1,6 +1,6 @@
 ## ER Diagram for Schema
 
-![ER Diagram](./Entity Relationship Diagram "ERD")
+![ER Diagram](./entity_relationship_diagram.png "ERD")
 
 ## Three Commonly Accessed Views
 
