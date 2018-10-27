@@ -46,6 +46,7 @@ ORDER BY "NumberOfCustomersRepresented" DESC;
 ```
 
 *Query Plan:*
+
 ![Query Plan](./query_plans/view1.PNG "Query Plan for Customer Relations View")
 
 *Operations Dominating the Cost:*  
