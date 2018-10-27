@@ -98,10 +98,6 @@ SELECT * FROM "TopCustomersBySales" LIMIT 50;
 *Query Plan:*  
 ![Query Plan](./query_plans/view2.PNG "Query Plan for Top Customers View")
 
-*Planning time: 0.212 ms*
-
-*Execution time: 6.250 ms*
-
 *Operations Dominating the Cost:*  
 - As seen in the table, we see that two operations dominate the total cost, the first is the GROUPBY operation to group all of a customer's transactions together based on CustomerId, and second is the JOIN operatioon based on InvoiceID. The first operation take a total of 1.365ms out of the total 3.855 ms, and the second takes 1.282 ms.
 
@@ -138,6 +134,10 @@ WHERE "TrackSales" > 2
 *Query Plan:*  
 
 ![Query Plan](./query_plans/view3.PNG "Query Plan for Top Tracks View")
+
+*Planning time: 0.212 ms*
+
+*Execution time: 6.250 ms*
 
 *Note: 'Exclusive' denotes time taken for execution, for that particular node. 'Inclusive' denotes the total time taken from the bottom of the tree to a node.*
 
