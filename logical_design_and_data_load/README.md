@@ -7,6 +7,30 @@
 * Purpose:
 
 *Create View Command:*
+```
+CREATE VIEW customer_relations AS
+    SELECT 
+        cu."CustomerId" AS "CustomerId",
+        cu."FirstName" || ' ' || cu."LastName" AS "FullName",
+        cu."Company" AS "Company",
+        cu."Address" AS "Address",
+        cu."City" AS "City",
+        cu."State" || ', ' || cu."Country" AS "Region",
+        cu."Phone" AS "Phone",
+        cu."Email" AS "Email",
+        em."EmployeeId" AS "EmployeeId",
+        em."FirstName" || ' ' || em."LastName" AS "Employee",
+        em."Title" AS "Title",
+        em."City" AS "EmployeeCity",
+        em."State" || ', ' || em."Country" AS "EmployeeRegion",
+        em."Phone" AS "EmployeePhone",
+        em."Email" AS "EmployeeEmail",
+        re."ReportsTo" AS "SupervisorId",
+        re."FirstName" || ' ' || re."LastName" AS "Supervisor"
+    FROM public."Customer" cu
+        LEFT JOIN public."Employee" em ON cu."SupportRepId" = em."EmployeeId"
+        INNER JOIN public."Employee" re ON em."ReportsTo" = re."EmployeeId";
+```
 
 *Representative Query:*
 
