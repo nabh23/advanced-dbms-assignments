@@ -7,7 +7,6 @@
 * Purpose: This view allows the business to analyze the information related to the performance of customer representatives, and understand/manage their respective workloads. We implement a join between the Customer and Employee tables, to see the assigned customer representative for each of the customers.
 
 *Create View Command:*
-
 ```
 CREATE VIEW customer_relations AS
     SELECT 
@@ -33,10 +32,21 @@ CREATE VIEW customer_relations AS
         INNER JOIN public."Employee" re ON em."ReportsTo" = re."EmployeeId";
 ```
 
-
 *Representative Query:*
+```
+-- Display the total number of customers serviced by each employee.
+EXPLAIN ANALYZE
+SELECT 
+	"EmployeeId",
+	"Employee",
+	COUNT(*) AS "NumberOfCustomersRepresented"	
+FROM customer_relations
+GROUP BY "EmployeeId", "Employee"
+ORDER BY "NumberOfCustomersRepresented" DESC;
+```
 
 *Query Plan:*
+![Query Plan](./query_plans/view1.PNG "Query Plan for Customer Relations View")
 
 *Operations Dominating the Cost:*  
 
