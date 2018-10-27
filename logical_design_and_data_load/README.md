@@ -58,9 +58,9 @@ ORDER BY "NumberOfCustomersRepresented" DESC;
 *Operations Dominating the Cost:*  
 
 *Algorithm Used for an Expensive Scenario:*
+We observe that 'Hash Join' is the algorithm used for performing the join between the Customer and Employee tables and the Employee table self join. This requires the creation of an in-memory hash table in which the rows of one table are entered. This operation is followed by the scan operation on the other table, where the hash table is probed for matches to each row.
 
 *Selection Condition in the Query Plan:*
-
 The selection condition was not pushed to the leaves in the query. Rather, it was performed as part of the aggregation operation. This is because in order for the sorting to be done, the aggregated column, 'NumberOfCustomersRepresented' was required to be computed. Therefore the optimizer, chose to apply the selection as part of the aggregation (HashAggregate) operation. Although, we could say that it was pushed to the leaf if we consider the nodes below the 'HashAggregate" node as part of the creation of the customer_relation view.
 
 ### 2. View Involving a GROUP-BY
