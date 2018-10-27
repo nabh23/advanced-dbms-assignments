@@ -4,7 +4,7 @@
 
 ### 1. View Involving a JOIN
 
-* Purpose:
+* Purpose: This view allows the business to analyze the information related to the performance of customer representatives, and understand/manage their respective workloads. We implement a join between the Customer and Employee tables, to see the assigned customer representative for each of the customers.
 
 *Create View Command:*
 ```
@@ -44,7 +44,7 @@ CREATE VIEW customer_relations AS
 
 ### 2. View Involving a GROUP-BY
 
-* Purpose: This view allows the business to analyze the customers who bought maximum worth of items in the digital music store, periodically. To get the result, we implement a join between the Customer, Invoice and InvoiceItem tables to view the customers whose purchase value was highest (weekly/monthly/annually)
+* Purpose: This view allows the business to analyze the customers who bought maximum worth of items in the digital music store, periodically. To get the result, we implement a join between the Customer, Invoice and InvoiceItem tables to view the customers whose purchase value was highest (weekly/monthly/annually).
 
 *Create View Command:*  
 ```
