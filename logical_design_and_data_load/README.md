@@ -155,3 +155,6 @@ Aggregation - The aggregation (GROUP BY) was performed by using the HashAggregat
 
 *Selection Condition in the Query Plan:*  
 The selection condition was not pushed to the leaves in the query. Rather, it was performed as part of the aggregation operation. This is because in order for the filtering to be done, the aggregated column, 'TrackSales' was required to be computed. Therefore the optimizer, chose to apply this selection as part of the aggregation (HashAggregate) operation.
+
+
+* To visualize the query plan we used the following resource : https://explain.depesz.com/
