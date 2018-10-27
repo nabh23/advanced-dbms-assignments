@@ -131,8 +131,7 @@ As it can be seen from the query plan above, the operations dominating the cost 
 	2. Join - The join between the Track and InvoiceLine tables is the second most expensive operation. It is denoted by the node with the 'HashJoin' operator. The operation required 1.6 ms.
 
 *Algorithm Used for an Expensive Scenario:*  
-
-	 * Aggregation - The aggregation (GROUP BY) was performed by using the HashAggregate algorithm. This algorithm involves iterating over each row, finding the GROUP-BY key, TrackId in this case, and assigning the row to a bucket corresponding to the TrackId in a hash-table. After processing all rows in this manner, the algorithm scans the hash-table and returns a single row for each key, while performing the required aggregation (sum in this case). Since the algorithm has to scan the entire table before it can return even a single row, this is an expensive operation.
+Aggregation - The aggregation (GROUP BY) was performed by using the HashAggregate algorithm. This algorithm involves iterating over each row, finding the GROUP-BY key, TrackId in this case, and assigning the row to a bucket corresponding to the TrackId in a hash-table. After processing all rows in this manner, the algorithm scans the hash-table and returns a single row for each key, while performing the required aggregation (sum in this case). Since the algorithm has to scan the entire table before it can return even a single row, this is an expensive operation.
 
 *Selection Condition in the Query Plan:*  
 The selection condition was not pushed to the leaves in the query. Rather, it was performed as part of the aggregation operation. This is because in order for the filtering to be done, the aggregated column, 'TrackSales' was required to be computed. Therefore the optimizer, chose to apply this selection as part of the aggregation (HashAggregate) operation.
