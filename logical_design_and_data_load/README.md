@@ -1,5 +1,7 @@
 ## ER Diagram for Schema
 
+![ER Diagram](./Entity Relationship Diagram "ERD")
+
 ## Three Commonly Accessed Views
 
 ### 1. View Involving a JOIN
