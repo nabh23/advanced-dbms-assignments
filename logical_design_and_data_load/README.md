@@ -4,33 +4,9 @@
 
 ### 1. View Involving a JOIN
 
-* Purpose: This view allows the business to analyze the information related to the performance of customer representatives, and understand/manage their respective workloads. We implement a join between the Customer and Employee tables, to see the assigned customer representative for each of the customers.
+* Purpose:
 
 *Create View Command:*
-```
-CREATE VIEW customer_relations AS
-    SELECT 
-        cu."CustomerId" AS "CustomerId",
-        cu."FirstName" || ' ' || cu."LastName" AS "FullName",
-        cu."Company" AS "Company",
-        cu."Address" AS "Address",
-        cu."City" AS "City",
-        cu."State" || ', ' || cu."Country" AS "Region",
-        cu."Phone" AS "Phone",
-        cu."Email" AS "Email",
-        em."EmployeeId" AS "EmployeeId",
-        em."FirstName" || ' ' || em."LastName" AS "Employee",
-        em."Title" AS "Title",
-        em."City" AS "EmployeeCity",
-        em."State" || ', ' || em."Country" AS "EmployeeRegion",
-        em."Phone" AS "EmployeePhone",
-        em."Email" AS "EmployeeEmail",
-        re."ReportsTo" AS "SupervisorId",
-        re."FirstName" || ' ' || re."LastName" AS "Supervisor"
-    FROM public."Customer" cu
-        LEFT JOIN public."Employee" em ON cu."SupportRepId" = em."EmployeeId"
-        INNER JOIN public."Employee" re ON em."ReportsTo" = re."EmployeeId";
-```
 
 *Representative Query:*
 
@@ -44,7 +20,7 @@ CREATE VIEW customer_relations AS
 
 ### 2. View Involving a GROUP-BY
 
-* Purpose: This view allows the business to analyze the customers who bought maximum worth of items in the digital music store, periodically. To get the result, we implement a join between the Customer, Invoice and InvoiceItem tables to view the customers whose purchase value was highest (weekly/monthly/annually).
+* Purpose: This view allows the business to analyze the customers who bought maximum worth of items in the digital music store, periodically. To get the result, we implement a join between the Customer, Invoice and InvoiceItem tables to view the customers whose purchase value was highest (weekly/monthly/annually)
 
 *Create View Command:*  
 ```
@@ -70,7 +46,7 @@ SELECT * FROM "TopCustomersBySales" LIMIT 50;
 ```
 
 *Query Plan:*  
-![Query Plan](./query_plans/view3.PNG "Query Plan for Top Customers View")
+![Query Plan](./query_plans/view2.PNG "Query Plan for Top Customers View")
 
 *Operations Dominating the Cost:*  
 *Sorting the records in descending order of the TotalAmt:*  
@@ -111,6 +87,7 @@ WHERE "TrackSales" > 2
 ![Query Plan](./query_plans/view3.PNG "Query Plan for Top Tracks View")
 
 *Operations Dominating the Cost:*  
+
 
 *Algorithm Used for an Expensive Scenario:*
 
