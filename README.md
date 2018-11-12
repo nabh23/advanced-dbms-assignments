@@ -6,3 +6,5 @@ Seventh: Advanced Topics in Relational and Non-Relational Databases Assignments 
 - [Performance Experiment: Bulk Ingest](/bulk_ingest)
 
 - [Project Milestone: Logical Design and Data Load](/logical_design_and_data_load)
+
+- [Performance Experiment: Queries and Indexing](/queries_and_indexing)
