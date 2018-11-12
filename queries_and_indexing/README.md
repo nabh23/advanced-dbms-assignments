@@ -32,3 +32,8 @@ Timings were measured programmatically using *EXPLAIN ANALYZE*.
 
 ## References
 
+Amazon Web Services, Inc. (2018). *DB Instance Class*. Retrieved from https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
+
+Dunning, T. (2017). *Log-synth*. Retrieved from https://github.com/tdunning/log-synth
+
+Rocha, L. (2017). *Chinook Database*. Retrieved from https://github.com/lerocha/chinook-database
