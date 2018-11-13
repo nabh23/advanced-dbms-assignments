@@ -31,12 +31,17 @@ We think  that the case with no index will have the lowest query performance. As
 ![Result](./charts/part_a.PNG "Selectivity Criteria versus Time (ms)")
 
 i. **No Index (SELECT_BASELINE)**: We found the performance in this scenario to be the slowest, since the query optimizer had to scan through all the records to select the ones that satisfy the condition in the WHERE clause. We also found the throughput to increase as the number of records selected increases, and the difference between the throughputs for different loads or selectivity %, fairly significant.  
+*Query Plan*: For this case, the optimizer chose the Sequential Scan for all the three selection percentages.
 
-ii. **BTREE Index on 1 column (SELECT_BTREE)**: For the index on one column, as expected, we found the query to take lesser time to fetch the records that match the WHERE clause. This is since the query optimizer knew and trudged through only a limited number of records to fetch the rows required, the efficiency added due to indexing. However, for increasing selectivity, i.e. as the number of records to be fetched increased, the performance resembled the throughput in the no index case, as the query optimizer had to sift through almost a similar number of records.
+ii. **BTREE Index on 1 column (SELECT_BTREE)**: For the index on one column, as expected, we found the query to take lesser time to fetch the records that match the WHERE clause. This is since the query optimizer knew and trudged through only a limited number of records to fetch the rows required, the efficiency added due to indexing. However, for increasing selectivity, i.e. as the number of records to be fetched increased, the performance resembled the throughput in the no index case, as the query optimizer had to sift through almost a similar number of records.  
+*Query Plan*: For this case, the optimizer chose the Bitmap Heap Scan when running the SELECT query for retrieving 20% of the records, and Sequential Scan for the remaining two selection percentages.
 
 iii. **Indexes on two columns (SELECT_COVER)**: For indexes on two columns, we found that the results were very similar to that of the single btree index, and that it did not significantly contribute to improvement in performance. Again for higher selectivities, the performance dropped and resembled the no-index query performance.  
+*Query Plan*: For this case, the optimizer again chose the Bitmap Heap Scan when running the SELECT query for retrieving 20% of the records, and Sequential Scan for the remaining two selection percentages.  
 
-iv. **Indexes on two columns in reverse order (SELECT_REVERSE)**: When we applied the two indexes in reverse order, surprisingly we found that query performance dropped significantly, especially for the 20% selection case. The performance for the 50% and 80% selectivity improved very slightly, by a factor of 0.001 ms or so.
+iv. **Indexes on two columns in reverse order (SELECT_REVERSE)**: When we applied the two indexes in reverse order, surprisingly we found that query performance dropped significantly, especially for the 20% selection case. The performance for the 50% and 80% selectivity improved very slightly, by a factor of 0.001 ms or so.  
+*Query Plan*: For this case, the optimizer chose the Sequential Scan for all the three selection percentages.
+
 
 
 
