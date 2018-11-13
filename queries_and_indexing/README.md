@@ -28,8 +28,6 @@ We think  that the case with no index will have the lowest query performance. As
 
 #### Results
 
-### Part A: Selection Query
-
 ![Result](./charts/part_a.PNG "Selectivity Criteria versus Time (ms)")
 
 i. **No Index (SELECT_BASELINE)**: We found the performance in this scenario to be the slowest, since the query optimizer had to scan through all the records to select the ones that satisfy the condition in the WHERE clause. We also found the throughput to increase as the number of records selected increases, and the difference between the throughputs for different loads or selectivity %, fairly significant.  
@@ -46,8 +44,7 @@ iv. **Indexes on two columns in reverse order (SELECT_REVERSE)**: When we applie
 
 ### Part B: Join Query
 
-![Result](./charts/part_b.PNG "Selectivity Criteria versus Time (ms)")
-
+![Result](./charts/part_b.png "Selectivity Criteria versus Time (ms)")
 
 ## Additional Experiments
 
