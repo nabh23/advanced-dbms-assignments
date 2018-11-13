@@ -26,7 +26,9 @@ Our expectation of performance of the SELECT query for different loads of data a
 #### Expectation
 We think  that the case with no index will have the lowest query performance. As we add indexes, the query performance is very likely to improve, however, the difference will be stark in cases of lower records to be fetched, and not so significant when a larger number of records need to be returned, as the query optimizer then has to run through a large number of records, and indexing does not really benefit it in any way. We also expect that applying two indexes on the table may cause the performance to improve slightly, and applying the two indexes in reverse order may not be very different, i.e. the SELECT_COVER and SELECT_REVERSE will give very similar results w.r.t query performance.  
 
-#### Results:
+#### Results
+
+### Part A: Selection Query
 
 ![Result](./charts/part_a.PNG "Selectivity Criteria versus Time (ms)")
 
@@ -42,8 +44,9 @@ iii. **Indexes on two columns (SELECT_COVER)**: For indexes on two columns, we f
 iv. **Indexes on two columns in reverse order (SELECT_REVERSE)**: When we applied the two indexes in reverse order, surprisingly we found that query performance dropped significantly, especially for the 20% selection case. The performance for the 50% and 80% selectivity improved very slightly, by a factor of 0.001 ms or so.  
 *Query Plan*: For this case, the optimizer chose the Sequential Scan for all the three selection percentages.
 
+### Part B: Join Query
 
-
+![Result](./charts/part_b.PNG "Selectivity Criteria versus Time (ms)")
 
 
 ## Additional Experiments
