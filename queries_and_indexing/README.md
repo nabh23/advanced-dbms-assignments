@@ -40,6 +40,12 @@ iv. **Indexes on two columns in reverse order (SELECT_REVERSE)**: When we applie
 
 ## Additional Experiments
 
+### 2. **Clustered index for select**:  
+Expectation: We expect that the query performance will be much higher than with a b-tree index. This is because clustering reorders and essentially changes the way the data is stored physically, the query optimizer will perform significantly better with a clustered index.   
+The only disadvantage is that clustering is not updated when the table is updated i.e. new records are inserted into the table, hence one would have to periodically run the clustering operation to make sure that the clustered index is available and maintained correctly.  
+#### Results:  
+
+
 
 
 ## Conclusions and Discussions
