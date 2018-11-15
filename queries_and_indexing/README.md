@@ -106,8 +106,8 @@ Result: We observe that it takes 0.01 ms on average for the query execution and 
 Hypothesis: We expect that the query performance will be much higher than with a b-tree index. This is because clustering reorders and essentially changes the way the data is stored physically, the query optimizer will perform significantly better with a clustered index.   
 The only disadvantage is that clustering is not updated when the table is updated i.e. new records are inserted into the table, hence one would have to periodically run the clustering operation to make sure that the clustered index is available and maintained correctly. 
 ```
-CREATE INDEX "millisec_clustered_idx" ON "Track" ("Milliseconds")
-CLUSTER "Track" on "millisec_clustered_idx" 
+CREATE INDEX "millisec_clustered_idx" ON "Track" ("Milliseconds");
+CLUSTER "Track" USING "millisec_clustered_idx";
 ```
 Select Query:  
 ```
@@ -127,7 +127,9 @@ Thus, we see that clusteredt index performs much better, and takes very little t
 
 ![Result](./charts/part_c2.png "Selectivity Criteria versus Time (ms) Comparison Chart")
 
-The above chart shows that among all the indexes, Clustered Index has the best performance and it takes the lowest time for data load. For the selectivity percentages of 50% and  80%, the time taken by clustered index is almost half of the time taken by other indexes, which makes it a very efficient indexing method. However, the one caveat is that this will work well only if the WHERE condition includes the column on which the clustering has been done. For other columns, it may not perform well at all.  
+The above chart shows that among all the indexes, Clustered Index has the best performance and it takes the lowest time for data load for the 20% selectivity. For the selectivity percentages of 50% and 80% however, the time taken by clustered index is  more than the time taken by other indexes, which makes us think that it does not perform well when the number of records to be fetched is higher. It could be that when larger number of records need to be fetched, the optimizer falls back to a Sequential Scan and hence, even if the data is stored in order on the physical disk, it takes longer for it to return the results.  
+
+However, the one caveat is that this will work well only if the WHERE condition includes the column on which the clustering has been done. For other columns, it may not perform well at all.  
 
 *Query Plan*: The EXPLAIN ANALZYE clause shows that after applying a clustered index, the query optimizer uses:
 - for 20%: a Bitmap Heap Scan is used, followed by a Bitmap Index Scan
