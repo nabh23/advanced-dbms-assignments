@@ -104,11 +104,10 @@ Result: We observe that it takes 0.01 ms on average for the query execution and 
 #### 2. **Clustered index for select**:
 
 Hypothesis: We expect that the query performance will be much higher than with a b-tree index. This is because clustering reorders and essentially changes the way the data is stored physically, the query optimizer will perform significantly better with a clustered index.   
-The only disadvantage is that clustering is not updated when the table is updated i.e. new records are inserted into the table, hence one would have to periodically run the clustering operation to make sure that the clustered index is available and maintained correctly.  
-Result:  
+The only disadvantage is that clustering is not updated when the table is updated i.e. new records are inserted into the table, hence one would have to periodically run the clustering operation to make sure that the clustered index is available and maintained correctly. 
 ```
-CREATE INDEX "millisec_clustered_idx" ON "Track" ("Milliseconds")
-CLUSTER "Track" on "millisec_clustered_idx" 
+CREATE INDEX "millisec_clustered_idx" ON "Track" ("Milliseconds");
+CLUSTER "Track" USING "millisec_clustered_idx";
 ```
 Select Query:  
 ```
@@ -119,7 +118,26 @@ WHERE "Track"."Milliseconds" < x;
 
 ```
 
-![Result](./charts/part_b.png "Selectivity Criteria versus Time (ms)")
+ 
+Result:  
+
+![Result](./charts/part_c2_1.png "Selectivity Criteria versus Time (ms) for Clustered Index")
+
+Thus, we see that clusteredt index performs much better, and takes very little time to execute the SELECT query for all selectivity ratios. Additionally, we observe that the performance improvement is highest for the 50% and 80% selectivity ratios.
+
+![Result](./charts/part_c2.png "Selectivity Criteria versus Time (ms) Comparison Chart")
+
+The above chart shows that among all the indexes, Clustered Index has the best performance and it takes the lowest time for data load for the 20% selectivity. For the selectivity percentages of 50% and 80% however, the time taken by clustered index is  more than the time taken by other indexes, which makes us think that it does not perform well when the number of records to be fetched is higher. It could be that when larger number of records need to be fetched, the optimizer falls back to a Sequential Scan and hence, even if the data is stored in order on the physical disk, it takes longer for it to return the results.  
+
+We found a useful and great explanation of why clustered indexes may sometimes not perform better than non-clustered index at the URL below:
+[https://dba.stackexchange.com/questions/137724/difference-between-clustered-index-seek-and-non-clustered-index-seek/137731#137731]
+Specifically, the author says that *For any other kind of seek except a singleton, there will be a scanning component as well. The scanning portion will also benefit from the greater density of the nonclustered index (more rows per page). Even if the pages must come in from persistent storage, reading fewer pages is faster.*  
+
+
+*Query Plan*: The EXPLAIN ANALZYE clause shows that after applying a clustered index, the query optimizer uses:
+- for 20%: a Bitmap Heap Scan is used, followed by a Bitmap Index Scan
+- for 50%: a Sequential Scan is used; this is probably because the records are all stored in a particular order die to clustered   indexing  
+- for 80%: Again, a Sequential Scan is used similar to the 50% case
 
 #### 3.
 
