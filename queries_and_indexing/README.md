@@ -21,7 +21,13 @@ Timings were measured programmatically using *EXPLAIN ANALYZE*.
 ## Main Result
 
 ### Part A: Selection Query
-Our expectation of performance of the SELECT query for different selectivity conditions and different types of indexing strategies are as highlighted below: 
+Our expectation of performance of the SELECT query for different selectivity conditions and different types of indexing strategies are as highlighted below:
+
+```
+SELECT "Milliseconds", "Name"
+FROM public."Track"
+WHERE "Track"."Milliseconds" < 166985;
+```
 
 #### Hypothesis
 
@@ -53,13 +59,35 @@ iv. **Indexes on two columns in reverse order (SELECT_REVERSE)**: When we applie
 
 ### Part C: Extensions
 
-#### 2. **Clustered index for select**:  
-Expectation: We expect that the query performance will be much higher than with a b-tree index. This is because clustering reorders and essentially changes the way the data is stored physically, the query optimizer will perform significantly better with a clustered index.   
+#### 1. **Hash indexes**:
+
+```
+EXPLAIN ANALYZE SELECT "Milliseconds", "Name"
+FROM public."Track"
+WHERE "Track"."Milliseconds" = 489733;
+```
+
+Hypothesis: We expect the planner to select the Index Scan for this query as we're fetching a single a record from the table, at a specific value in the column on which we have created a hash index, using the WHERE clause.
+
+Result: We observe that it takes 0.01 ms on average for the query execution and the planner uses the Index Scan to perform the query. 
+
+#### 2. **Clustered index for select**:
+
+Hypothesis: We expect that the query performance will be much higher than with a b-tree index. This is because clustering reorders and essentially changes the way the data is stored physically, the query optimizer will perform significantly better with a clustered index.   
 The only disadvantage is that clustering is not updated when the table is updated i.e. new records are inserted into the table, hence one would have to periodically run the clustering operation to make sure that the clustered index is available and maintained correctly.  
-#### Results:  
+Result:  
 
+#### 3.
 
+Hypothesis:
 
+Result:
+
+#### 4.
+
+Hypothesis:
+
+Result:
 
 ## Conclusions and Discussions
 
