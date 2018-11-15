@@ -106,6 +106,20 @@ Result: We observe that it takes 0.01 ms on average for the query execution and 
 Hypothesis: We expect that the query performance will be much higher than with a b-tree index. This is because clustering reorders and essentially changes the way the data is stored physically, the query optimizer will perform significantly better with a clustered index.   
 The only disadvantage is that clustering is not updated when the table is updated i.e. new records are inserted into the table, hence one would have to periodically run the clustering operation to make sure that the clustered index is available and maintained correctly.  
 Result:  
+```
+CREATE INDEX "millisec_clustered_idx" ON "Track" ("Milliseconds")
+CLUSTER "Track" on "millisec_clustered_idx" 
+```
+Select Query:  
+```
+EXPLAIN ANALYZE SELECT "Milliseconds", "Name"
+FROM public."Track"
+WHERE "Track"."Milliseconds" < x;
+(x = 166985, 327320, 489733, for 20%, 50% and 80% records selectivity)
+
+```
+
+![Result](./charts/part_b.png "Selectivity Criteria versus Time (ms)")
 
 #### 3.
 
