@@ -6,7 +6,7 @@
 
 ## Hypothesis
 
-
+We have written our hypothesis for each of the parts in their respective sections under the *Main Result* section. 
 
 ## Assumptions and Setup
 
@@ -23,7 +23,7 @@ Timings were measured programmatically using *EXPLAIN ANALYZE*.
 ### Part A: Selection Query
 Our expectation of performance of the SELECT query for different selectivity conditions and different types of indexing strategies are as highlighted below: 
 
-#### Expectation
+#### Hypothesis
 
 We believe that the case with no indexes will have the lowest query performance. As we add indexes, the query performance is likely to improve; however, the difference will be stark in cases of lower records to be fetched, and not so significant when a larger number of records need to be returned, as the query optimizer then has to run through a large number of records, and indexing does not really benefit it in any way. We also expect that applying two indexes on the table, specifically on the two columns in our SELECT query, may cause the performance to improve, as PostgreSQL could perform an index scan if the query does not need to access any columns that haven’t been indexed. Cover indexes are usually created for the purpose of being used in index-scans. Creation of these indexes in reverse order may lead to differences depending on the column on which we're applying the WHERE clause, i.e. the SELECT_COVER and SELECT_REVERSE may not give similar results w.r.t query performance. We expect the performance to drop in the SELECT_REVERSE as the first column in our cover doesn't remain the column on which we have the WHERE clause.   
 
