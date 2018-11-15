@@ -129,7 +129,10 @@ Thus, we see that clusteredt index performs much better, and takes very little t
 
 The above chart shows that among all the indexes, Clustered Index has the best performance and it takes the lowest time for data load for the 20% selectivity. For the selectivity percentages of 50% and 80% however, the time taken by clustered index is  more than the time taken by other indexes, which makes us think that it does not perform well when the number of records to be fetched is higher. It could be that when larger number of records need to be fetched, the optimizer falls back to a Sequential Scan and hence, even if the data is stored in order on the physical disk, it takes longer for it to return the results.  
 
-However, the one caveat is that this will work well only if the WHERE condition includes the column on which the clustering has been done. For other columns, it may not perform well at all.  
+We found a useful and great explanation of why clustered indexes may sometimes not perform better than non-clustered index at the URL below:
+[https://dba.stackexchange.com/questions/137724/difference-between-clustered-index-seek-and-non-clustered-index-seek/137731#137731]
+Specifically, the author says that *For any other kind of seek except a singleton, there will be a scanning component as well. The scanning portion will also benefit from the greater density of the nonclustered index (more rows per page). Even if the pages must come in from persistent storage, reading fewer pages is faster.*  
+
 
 *Query Plan*: The EXPLAIN ANALZYE clause shows that after applying a clustered index, the query optimizer uses:
 - for 20%: a Bitmap Heap Scan is used, followed by a Bitmap Index Scan
