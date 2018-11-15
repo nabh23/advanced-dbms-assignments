@@ -136,7 +136,7 @@ Specifically, the author says that *For any other kind of seek except a singleto
 
 *Query Plan*: The EXPLAIN ANALZYE clause shows that after applying a clustered index, the query optimizer uses:
 - for 20%: a Bitmap Heap Scan is used, followed by a Bitmap Index Scan
-- for 50%: a Sequential Scan is used; this is probably because the records are all stored in a particular order die to clustered   indexing  
+- for 50%: a Sequential Scan is used; this is probably because the records are all stored in a particular order, and the optimizer scans them sequentially to retrieve all relevant records  
 - for 80%: Again, a Sequential Scan is used similar to the 50% case
 
 #### 3.
