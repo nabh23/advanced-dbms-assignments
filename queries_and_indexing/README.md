@@ -118,7 +118,7 @@ Result:
 Hypothesis:
 
 Result:
-
+![Result](./charts/part_c_4.png "Index Building versus Time (ms)")
 ## Conclusions and Discussions
 
 
