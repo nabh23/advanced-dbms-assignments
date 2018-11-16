@@ -156,9 +156,9 @@ Result:
 
 ![Result](./charts/part_c_4.png "Index Building versus Time (ms)")
 
-From the above chart, we observe that the index creation time is highest for reverse index (where first column is of datatype varchar and the second column is of type integer) for 20% and 50% scenarios.
+From the chart above, we observe that the index creation time is highest for reverse index (where first column is of type varchar and the second column is of type integer) for 20% and 50% scenarios.
 
-Also, we observe that when 80% of the records are deleted from the table, the index creation time is almost same for all the scenarios which follows our hypothesis. The pattern of cover indexes is little interesting which fluctuates from being greater and lower than normal indexes. We presume that the high build time for Reverse index could be because of the order of columns (data type) or the distribution of data in the columns (data pattern) but there is no hard evidence of such. 
+Also, we observe that when 80% of the records are deleted from the table, the index creation time is almost same for all the scenarios which follows our hypothesis. The pattern of cover indexes is interesting as the index creation time fluctuates from being greater and lower than normal indexes in different scenarios. We presume that the high build time for reverse index could be because of the order of columns (based on its data type) or the distribution of data in the columns (data pattern). 
 
 ## Conclusions and Discussions
 
