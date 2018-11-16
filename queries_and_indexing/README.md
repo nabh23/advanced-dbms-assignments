@@ -139,10 +139,18 @@ Specifically, the author says that *For any other kind of seek except a singleto
 #### 3. **Clustered Indexes for Join:** **Harkar Talwar**
 
 Hypothesis:
+The expectation here is that creating a clustered index on the join columns would make the optimizer prefer a Merge Join as opposed to a Hash Join. This is because our data would be physically ordered as per the join keys and therefore matching join key values in both the tables should be efficient. Based on this assumption, we expect our join query to perform better, at least for the limited selectivity case.
 
 Result:
 
 ![Result](./charts/part_c_3.png "Clustered indexes for join")
+
+The results show that the execution times for the join query after using clustered indexes were slightly lower than other indexing schemes. Also, we observe that the optimizer chose the same plan as it did for most of the other index types, which is:-
+1. Push the filter to the bottom, and perform a sequential scan to filter out the rows from table Y (Track)
+2. Use the filtered rows to populate a hash table
+3. Perform a sequential scan on the table X (InvoiceLine) and perform a Hash Join.
+
+Further, having the rows physically ordered by the join column seems to have yielded a small performance advantage. But it is unclear what caused the improvement, since the operations performed by the optimizer did not seem to be leverage the clustered index.
 
 #### 4. **Index build timing:** **Aakash Agrawal**
 
@@ -160,7 +168,11 @@ Also, we observe that when 80% of the records are deleted from the table, the in
 
 ## Conclusions and Discussions
 
-One important insight from these experiments that we have gained is that *the performance advantage of an index-only scans depends on the number of accessed rows and the index clustering factor.* Also, we found that for selection based on a condition, the clustered index does not necessarily perform better. One possible experiment we could try in the future is try running the SELECT query with only 5-10% selectivity values and clustered indexes
+We encountered a few interesting results as part of this performance experiment. One important insight from these experiments is that the performance advantage of an index-only scans depends on the number of accessed rows and the index clustering factor. The most efficient results were obtained when the optimizer was able to perform a Bitmap Index Scan based on an index that we created. This however was only done with limited selectivity, i.e. 20% of the rows being fetched. We found that for selection based on a condition, the clustered index does not necessarily perform better. Moreover, our join queries seemed to almost always use a Sequential Scan + Hash Join approach, rather than making use of the created indexes. It was also seen that having clustered indexes, even on the join columns for two tables may not necessarily provide a performance advantage, and the optimizer may still choose to do a Hash Join. Finally, the additional experiment related to analyzing the time for building indexes showed us that not only does the order of the columns in the index matter, but also their data types and the column widths.
+
+A key recommendation to DBAs from this exercise would be that the data access patterns should drive index creation and definitions. Indexes offer a significant advantage only in cases of limited selectivity of rows. If a majority of the table's rows are being fetched, the optimizer might end up doing a sequential scan instead.
+
+In terms of the next steps, we're interested in seeing whether some of the queries defaulting to sequential scans was due to RDS specific PostgreSQL configurations, or was it really the case that the optimizer could not have created more efficient plans for our queries by using the indexes. A step in this direction would be to try playing with the query planner configuration parameters like enable_indexscan, and enable_seqscan (PostgreSQL, 2018) to force the optimizer to pick different scanning methods, and then comparing performance.  
 
 
 ## References
@@ -169,6 +181,7 @@ Amazon Web Services, Inc. (2018). *DB Instance Class*. Retrieved from https://do
 
 Dunning, T. (2017). *Log-synth*. Retrieved from https://github.com/tdunning/log-synth
 
+PostgreSQL. (2018). Query Planning. Retrieved from PostgreSQL: https://www.postgresql.org/docs/9.5/runtime-config-query.html
+
 Rocha, L. (2017). *Chinook Database*. Retrieved from https://github.com/lerocha/chinook-database
 
-Indexes in PostgreSQL: Retrieved from: https://use-the-index-luke.com/sql/clustering/index-only-scan-covering-index
