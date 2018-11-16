@@ -149,9 +149,16 @@ Result:
 
 Hypothesis:
 
+We hypothesize that the index creation time for the cover indexes and reverse indexes would be more than the indexes built on single columns. Also when we reduce the size of the table by 80%, there should not be any significant difference in the index build time.
+
 Result:
 
 ![Result](./charts/part_c_4.png "Index Building versus Time (ms)")
+
+From the above chart, we observe that the index creation time is more for cover and reverse indexes, with reverse index having the highest build time.
+
+Also, we observe that when 80%of the records are deleted from the table, the index creation time is almost same for all the scenarios which follows our hypothesis. The pattern of cover indexes is little interesting which shows fluctuates from being greater and lower than normal indexes.
+
 ## Conclusions and Discussions
 
 
