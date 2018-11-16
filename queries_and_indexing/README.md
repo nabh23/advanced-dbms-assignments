@@ -121,8 +121,6 @@ WHERE "Track"."Milliseconds" < x;
  
 Result:  
 
-![Result](./charts/part_c2_1.png "Selectivity Criteria versus Time (ms) for Clustered Index")
-
 
 ![Result](./charts/part_c2.png "Selectivity Criteria versus Time (ms) Comparison Chart")
 
