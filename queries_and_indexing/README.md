@@ -2,7 +2,7 @@
 
 ## Abstract
 
-This experiment compares the performance of SELECT queries under different indexing schemes and selectivity criteria (20%, 50%, and 80% of the records returned) against the "Digital Music Store" PostgreSQL database. First, we analyze the performance of SELECT query on a single table. Second, we analyze the performance of SELECT query on two tables JOIN-ed together. We find that there is an increase in query performance when there exists an index on the columns that are being queried. However, we don't observe any significant difference in the performance when the query returns a significant portion of the table.
+This experiment compares the performance of SELECT queries under different indexing schemes and selectivity criteria (20%, 50%, and 80% of the records returned) against the "Digital Music Store" PostgreSQL database. First, we analyze the performance of SELECT query on a single table. Second, we analyze the performance of SELECT query on two tables JOIN-ed together. We find that there is an increase in query performance in some, but not all cases when an index exists on the columns that are being queried. However, we don't observe any significant difference in the performance when the query returns a significant portion of the table.
 
 ## Hypothesis
 
