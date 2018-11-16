@@ -50,18 +50,3 @@ FROM public."Track"
 WHERE "Track"."Milliseconds" = 489733;
 
 -- 2. Clustered index for select
-
-
-
--- 3. Clustered indexes for join
-CREATE INDEX IF NOT EXISTS "track_trackid_btree" ON "Track" USING btree ("TrackId");	
-CLUSTER "Track" USING "track_trackid_btree";
-
-CREATE INDEX IF NOT EXISTS "invoiceline_trackid_btree" ON "InvoiceLine" USING btree ("TrackId");
-CLUSTER "InvoiceLine" USING "invoiceline_trackid_btree";
-
--- 4. Index build timing
-
--- To record the build time for each of the indexes in main experiment, we have used the CREATE queries mentioned in Part A and B.
-
-
