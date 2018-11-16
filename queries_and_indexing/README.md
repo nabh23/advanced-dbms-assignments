@@ -123,11 +123,10 @@ Result:
 
 ![Result](./charts/part_c2_1.png "Selectivity Criteria versus Time (ms) for Clustered Index")
 
-Thus, we see that clustered index performs much better, and takes very little time to execute the SELECT query for all selectivity ratios. Additionally, we observe that the performance improvement is highest for the 50% and 80% selectivity ratios.
 
 ![Result](./charts/part_c2.png "Selectivity Criteria versus Time (ms) Comparison Chart")
 
-The above chart shows that among all the indexes, Clustered Index has the best performance and it takes the lowest time for data load for the 20% selectivity. For the selectivity percentages of 50% and 80% however, the time taken by clustered index is  more than the time taken by other indexes, which makes us think that it does not perform well when the number of records to be fetched is higher. It could be that when larger number of records need to be fetched, the optimizer falls back to a Sequential Scan and hence, even if the data is stored in order on the physical disk, it takes longer for it to return the results.  
+The above chart shows that among all the indexes, Clustered Index takes the lowest time for data load for the 20% selectivity. For the selectivity percentages of 50% and 80% however, the time taken by clustered index is  more than the time taken by other indexes, which makes us think that it does not perform well when the number of records to be fetched is higher. It could be that when larger number of records need to be fetched, the optimizer falls back to a Sequential Scan and hence, even if the data is stored in order on the physical disk, it takes longer for it to return the results.  
 
 We found a useful and great explanation of why clustered indexes may sometimes not perform better than non-clustered index at the URL below:
 [https://dba.stackexchange.com/questions/137724/difference-between-clustered-index-seek-and-non-clustered-index-seek/137731#137731]
