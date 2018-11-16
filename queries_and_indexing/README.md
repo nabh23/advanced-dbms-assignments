@@ -89,7 +89,7 @@ iv. **B-tree Index on filter column (JOIN_FILTER)**: With a B-tree index created
 
 ### Part C: Extensions
 
-#### 1. **Hash indexes**:
+#### 1. **Hash indexes**: **Prateek Tripathi**
 
 ```
 EXPLAIN ANALYZE SELECT "Milliseconds", "Name"
@@ -101,7 +101,7 @@ Hypothesis: We expect the planner to select the Index Scan for this query as we'
 
 Result: We observe that it takes 0.01 ms on average for the query execution and the planner uses the Index Scan to perform the query. 
 
-#### 2. **Clustered index for select**:
+#### 2. **Clustered index for select**: **Jayashree Raman**
 
 Hypothesis: We expect that the query performance will be much better than with a mullti-column index, however we are unsure if this will essentially perform better that a btree or hash index. This is because clustering reorders and essentially changes the way the data is stored physically, the query optimizer will perform significantly better with a clustered index in some cases, or may not in others.  
 The only disadvantage is that clustering is not updated when the table is updated i.e. new records are inserted into the table, hence one would have to periodically run the clustering operation to make sure that the clustered index is available and maintained correctly. 
@@ -123,7 +123,7 @@ Result:
 
 ![Result](./charts/part_c2_1.png "Selectivity Criteria versus Time (ms) for Clustered Index")
 
-Thus, we see that clusteredt index performs much better, and takes very little time to execute the SELECT query for all selectivity ratios. Additionally, we observe that the performance improvement is highest for the 50% and 80% selectivity ratios.
+Thus, we see that clustered index performs much better, and takes very little time to execute the SELECT query for all selectivity ratios. Additionally, we observe that the performance improvement is highest for the 50% and 80% selectivity ratios.
 
 ![Result](./charts/part_c2.png "Selectivity Criteria versus Time (ms) Comparison Chart")
 
@@ -139,7 +139,7 @@ Specifically, the author says that *For any other kind of seek except a singleto
 - for 50%: a Sequential Scan is used; this is probably because the records are all stored in a particular order, and the optimizer scans them sequentially to retrieve all relevant records  
 - for 80%: Again, a Sequential Scan is used similar to the 50% case
 
-#### 3.
+#### 3. **Clustered Indexes for Join:** **Harkar Talwar**
 
 Hypothesis:
 
@@ -147,7 +147,7 @@ Result:
 
 ![Result](./charts/part_c_3.png "Clustered indexes for join")
 
-#### 4.
+#### 4. **Index build timing:** **Aakash Agrawal**
 
 Hypothesis:
 
