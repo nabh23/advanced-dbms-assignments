@@ -62,7 +62,6 @@ CLUSTER "InvoiceLine" USING "invoiceline_trackid_btree";
 
 -- 4. Index build timing
 
+-- To record the build time for each of the indexes in main experiment, we have used the CREATE queries mentioned in Part A and B.
 
-
---
 
