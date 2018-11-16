@@ -162,6 +162,7 @@ Also, we observe that when 80% of the records are deleted from the table, the in
 
 ## Conclusions and Discussions
 
+One important insight from these experiments that we have gained is that *the performance advantage of an index-only scans depends on the number of accessed rows and the index clustering factor.* Also, we found that for selection based on a condition, the clustered index does not necessarily perform better. One possible experiment we could try in the future is try running the SELECT query with only 5-10% selectivity values and clustered indexes
 
 
 ## References
@@ -171,3 +172,5 @@ Amazon Web Services, Inc. (2018). *DB Instance Class*. Retrieved from https://do
 Dunning, T. (2017). *Log-synth*. Retrieved from https://github.com/tdunning/log-synth
 
 Rocha, L. (2017). *Chinook Database*. Retrieved from https://github.com/lerocha/chinook-database
+
+Indexes in PostgreSQL: Retrieved from: https://use-the-index-luke.com/sql/clustering/index-only-scan-covering-index
