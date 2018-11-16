@@ -145,6 +145,8 @@ Hypothesis:
 
 Result:
 
+![Result](./charts/part_c_3.png "Clustered indexes for join")
+
 #### 4.
 
 Hypothesis:
