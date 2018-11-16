@@ -39,19 +39,19 @@ We believe that the case with no indexes will have the lowest query performance.
 
 i. **No Index (SELECT_BASELINE)**: We found the performance in this scenario to be the slowest, since the query optimizer had to scan through all the records to select the ones that satisfy the condition in the WHERE clause. We also found the throughput to increase as the number of records selected increases, and the difference between the throughputs for different loads or selectivity %, significantly.
 
-*Query Plan*: For this case, the optimizer chose the Sequential Scan for all the three selection percentages.
+*Query Plan*: For this case, the optimizer chose the Sequential Scan for all the three selection percentages. Since there was no index to be accessed, the query optimizer performed a sequential scan retrieving the records as dictated in the WHERE clause.
 
 ii. **BTREE Index on 1 column (SELECT_BTREE)**: For the index on one column, as expected, we found the query to take lesser time to fetch the records that match the WHERE clause. This is since the query optimizer knew and trudged through only a limited number of records to fetch the rows required, where the efficiency added is due to indexing. However, for increasing selectivity, i.e. as the number of records to be fetched increased, the performance resembled the throughput in the no index case, as the planner preferred a sequential scan as the query had to return a significant portion of the table.
 
-*Query Plan*: For this case, the optimizer chose the Bitmap Heap Scan when running the SELECT query for retrieving 20% of the records, and Sequential Scan for the remaining two selection percentages.
+*Query Plan*: For this case, the optimizer chose the Bitmap Heap Scan when running the SELECT query for retrieving 20% of the records, and Sequential Scan for the remaining two selection percentages. We think the optimizer found the Bitmap Heap Scan more efficient for 20% of the records, since the number of records were fairly large enough to show improved performance with Bitmap Heap Scan. However for selectivities of 50% and 80%, sequential scan turned out to be much efficient, which is why the index was not used.  
 
 iii. **Indexes on two columns (SELECT_COVER)**: For indexes on two columns, we found that the results were very similar to that of the single btree index, and that it did not contribute to improvements in performance. Again for higher selectivities, the performance dropped and resembled the no-index query performance. Although we expected the performance to improve as we were using SELECT on the two columns on which we had created the cover index, but it didn't. It could be because of the fact that we're trying to return a significant portion of the table, or due to unexplored limitations imposed by Amazon RDS PostgreSQL (like random_page_cost, seq_page_cost settings, or others). 
 
-*Query Plan*: For this case, the optimizer again chose the Bitmap Heap Scan when running the SELECT query for retrieving 20% of the records, and Sequential Scan for the remaining two selection percentages.  
+*Query Plan*: For this case, the optimizer again chose the Bitmap Heap Scan when running the SELECT query for retrieving 20% of the records, and Sequential Scan for the remaining two selection percentages. For reasons similar to the one described for BTREE indexes, the Bitmap Heap Scan was the most optimum when selecting 20% (approximately 4000 records), but when selecting 505 or 80%, the sequential scan had a lower cost, which is why the optimizer chose it.  
 
 iv. **Indexes on two columns in reverse order (SELECT_REVERSE)**: When we applied the two indexes in reverse order, we found that query performance dropped, especially for the 20% selection case. The performance for the 50% and 80% selectivity remained unchanged. We believe that the performance expectations were not met due to similar reasons as stated for the SELECT_COVER case. Furthermore, the performnace for the 20% selection case would have dropped as the column on which the WHERE clause was applied, wasn't the first in the cover index created. 
 
-*Query Plan*: For this case, the optimizer chose the Sequential Scan for all the three selection percentages.
+*Query Plan*: For this case, the optimizer chose the Sequential Scan for all the three selection percentages. Here, since we applied the indexes in reverse order, the optimizer really did not find the index useful at all. In addition, the performance was almost similar to the case with no indexes (sometimes worse), which could be because the optimizer had to increase the number of reads due to the reversed indexes.  
 
 ### Part B: Join Query
 
@@ -136,7 +136,7 @@ Specifically, the author says that *For any other kind of seek except a singleto
 
 *Query Plan*: The EXPLAIN ANALZYE clause shows that after applying a clustered index, the query optimizer uses:
 - for 20%: a Bitmap Heap Scan is used, followed by a Bitmap Index Scan
-- for 50%: a Sequential Scan is used; this is probably because the records are all stored in a particular order, and the optimizer scans them sequentially to retrieve all relevant records  
+- for 50%: a Sequential Scan is used; this is probably because the records are all stored in a particular order, and the optimizer scans them sequentially to retrieve all relevant records, which is a fairly large number of records
 - for 80%: Again, a Sequential Scan is used similar to the 50% case
 
 #### 3. **Clustered Indexes for Join:** **Harkar Talwar**
