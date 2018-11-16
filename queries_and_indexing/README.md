@@ -151,7 +151,7 @@ Result:
 
 Hypothesis:
 
-We hypothesize that the index creation time for the cover indexes and reverse indexes would be more than the indexes built on single columns. Also when we reduce the size of the table by 80%, there should not be any significant difference in the index build time.
+We hypothesize that the index creation time for the cover indexes and reverse indexes would be more than the indexes built on single columns. Also when we reduce the size of the table by 80%, there should not be any significant difference in the index build time due to the fact that we are left with insignificant amount of records (20 % of 20,000 = 4000).
 
 Result:
 
