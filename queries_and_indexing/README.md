@@ -101,7 +101,7 @@ Hypothesis: We expect the planner to select the Index Scan for this query as we'
 
 Result: We observe that it takes 0.01 ms on average for the query execution and the planner uses the Index Scan to perform the query. 
 
-#### 2. **Clustered index for SELECT **: **Jayashree Raman**
+#### 2. **Clustered index for SELECT**: **Jayashree Raman**
 
 Hypothesis: We expect that the query performance will be much better than with a multi-column index, however we are unsure if this will essentially perform better that a btree or hash index. This is because clustering reorders and essentially changes the way the data is stored physically, the query optimizer will perform significantly better with a clustered index in some cases, or may not in others.  
 The only disadvantage is that clustering is not updated when the table is updated i.e. new records are inserted into the table, hence one would have to periodically run the clustering operation to make sure that the clustered index is available and maintained correctly. 
